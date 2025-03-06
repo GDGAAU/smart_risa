@@ -1,25 +1,70 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Bus, User, AlertTriangle } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Bus, User, AlertTriangle, Loader2 } from "lucide-react"; // Added Loader2 for spinner
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import toast from "react-hot-toast";
 
 export default function OperatorDashboard() {
   const [buses, setBuses] = useState([
-    { id: "BUS-1042", route: "42", status: "Available", capacity: "Medium (50%)" },
+    {
+      id: "BUS-1042",
+      route: "42",
+      status: "Available",
+      capacity: "Medium (50%)",
+    },
     { id: "BUS-1015", route: "15", status: "Full", capacity: "High (90%)" },
     { id: "BUS-1008", route: "8", status: "Available", capacity: "Low (30%)" },
-    { id: "BUS-1023", route: "23", status: "Almost Full", capacity: "High (80%)" },
-  ])
+    {
+      id: "BUS-1023",
+      route: "23",
+      status: "Almost Full",
+      capacity: "High (80%)",
+    },
+  ]);
+
+  const [isReportingTrafficIssue, setIsReportingTrafficIssue] = useState(false);
+  const [isReportingVehicleProblem, setIsReportingVehicleProblem] =
+    useState(false);
 
   const updateBusStatus = (busId, newStatus) => {
-    setBuses(buses.map((bus) => (bus.id === busId ? { ...bus, status: newStatus } : bus)))
-  }
+    setBuses(
+      buses.map((bus) =>
+        bus.id === busId ? { ...bus, status: newStatus } : bus
+      )
+    );
+  };
+
+  const handleReportIssue = async (issueType, setLoading) => {
+    setLoading(true); // Start loading
+    try {
+      // Simulate an async operation (e.g., API call)
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
+      toast.success(`You have reported a ${issueType.toLowerCase()}.`);
+    } catch (error) {
+      toast.error("Failed to report the issue. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -71,7 +116,10 @@ export default function OperatorDashboard() {
                       <TableRow key={bus.id}>
                         <TableCell className="font-medium">{bus.id}</TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="bg-primary/10 text-primary">
+                          <Badge
+                            variant="outline"
+                            className="bg-primary/10 text-primary"
+                          >
                             {bus.route}
                           </Badge>
                         </TableCell>
@@ -80,15 +128,26 @@ export default function OperatorDashboard() {
                         </TableCell>
                         <TableCell>{bus.capacity}</TableCell>
                         <TableCell>
-                          <Select defaultValue={bus.status} onValueChange={(value) => updateBusStatus(bus.id, value)}>
+                          <Select
+                            defaultValue={bus.status}
+                            onValueChange={(value) =>
+                              updateBusStatus(bus.id, value)
+                            }
+                          >
                             <SelectTrigger className="w-[140px]">
                               <SelectValue placeholder="Update status" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Available">Available</SelectItem>
-                              <SelectItem value="Almost Full">Almost Full</SelectItem>
+                              <SelectItem value="Available">
+                                Available
+                              </SelectItem>
+                              <SelectItem value="Almost Full">
+                                Almost Full
+                              </SelectItem>
                               <SelectItem value="Full">Full</SelectItem>
-                              <SelectItem value="Out of Service">Out of Service</SelectItem>
+                              <SelectItem value="Out of Service">
+                                Out of Service
+                              </SelectItem>
                             </SelectContent>
                           </Select>
                         </TableCell>
@@ -107,13 +166,43 @@ export default function OperatorDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
-                  <Button className="gap-2">
-                    <AlertTriangle className="h-4 w-4" />
-                    Report Traffic Issue
+                  <Button
+                    className="gap-2"
+                    onClick={() =>
+                      handleReportIssue(
+                        "Traffic Issue",
+                        setIsReportingTrafficIssue
+                      )
+                    }
+                    disabled={isReportingTrafficIssue}
+                  >
+                    {isReportingTrafficIssue ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <AlertTriangle className="h-4 w-4" />
+                    )}
+                    {isReportingTrafficIssue
+                      ? "Reporting..."
+                      : "Report Traffic Issue"}
                   </Button>
-                  <Button className="gap-2">
-                    <Bus className="h-4 w-4" />
-                    Report Vehicle Problem
+                  <Button
+                    className="gap-2"
+                    onClick={() =>
+                      handleReportIssue(
+                        "Vehicle Problem",
+                        setIsReportingVehicleProblem
+                      )
+                    }
+                    disabled={isReportingVehicleProblem}
+                  >
+                    {isReportingVehicleProblem ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Bus className="h-4 w-4" />
+                    )}
+                    {isReportingVehicleProblem
+                      ? "Reporting..."
+                      : "Report Vehicle Problem"}
                   </Button>
                 </div>
               </CardContent>
@@ -122,29 +211,31 @@ export default function OperatorDashboard() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 function StatusBadge({ status }) {
-  let badgeClass = ""
+  let badgeClass = "";
 
   switch (status) {
     case "Available":
-      badgeClass = "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-      break
+      badgeClass =
+        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      break;
     case "Almost Full":
-      badgeClass = "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
-      break
+      badgeClass =
+        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
+      break;
     case "Full":
-      badgeClass = "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-      break
+      badgeClass = "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+      break;
     case "Out of Service":
-      badgeClass = "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300"
-      break
+      badgeClass =
+        "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
+      break;
     default:
-      badgeClass = "bg-muted text-muted-foreground"
+      badgeClass = "bg-muted text-muted-foreground";
   }
 
-  return <Badge className={badgeClass}>{status}</Badge>
+  return <Badge className={badgeClass}>{status}</Badge>;
 }
-

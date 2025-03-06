@@ -1,24 +1,57 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, Bus, User, Settings, Plus, MessageSquare, Edit, Trash2 } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  ArrowLeft,
+  Bus,
+  User,
+  Settings,
+  Plus,
+  MessageSquare,
+  Edit,
+  Trash2,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 export default function AdminDashboard() {
   const [buses, setBuses] = useState([
     { id: "BUS-1042", route: "42", driver: "Michael Chen", status: "Active" },
     { id: "BUS-1015", route: "15", driver: "Sarah Johnson", status: "Active" },
     { id: "BUS-1008", route: "8", driver: "David Wilson", status: "Active" },
-    { id: "BUS-1023", route: "23", driver: "Lisa Rodriguez", status: "Maintenance" },
-  ])
+    {
+      id: "BUS-1023",
+      route: "23",
+      driver: "Lisa Rodriguez",
+      status: "Maintenance",
+    },
+  ]);
 
   const [alerts, setAlerts] = useState([
     {
@@ -42,10 +75,10 @@ export default function AdminDashboard() {
       message: "Festival causing road closures",
       status: "Scheduled",
     },
-  ])
+  ]);
 
-  const [newBusId, setNewBusId] = useState("")
-  const [newBusRoute, setNewBusRoute] = useState("")
+  const [newBusId, setNewBusId] = useState("");
+  const [newBusRoute, setNewBusRoute] = useState("");
 
   const addNewBus = () => {
     if (newBusId && newBusRoute) {
@@ -57,11 +90,11 @@ export default function AdminDashboard() {
           driver: "Unassigned",
           status: "Inactive",
         },
-      ])
-      setNewBusId("")
-      setNewBusRoute("")
+      ]);
+      setNewBusId("");
+      setNewBusRoute("");
     }
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -103,7 +136,9 @@ export default function AdminDashboard() {
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle>Fleet Management</CardTitle>
-                    <CardDescription>Add, edit, or remove buses from the system</CardDescription>
+                    <CardDescription>
+                      Add, edit, or remove buses from the system
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-4 mb-6 p-4 border rounded-lg">
@@ -119,7 +154,10 @@ export default function AdminDashboard() {
                         />
                       </div>
                       <div className="grid gap-2 flex-1">
-                        <label htmlFor="bus-route" className="text-sm font-medium">
+                        <label
+                          htmlFor="bus-route"
+                          className="text-sm font-medium"
+                        >
                           Route
                         </label>
                         <Input
@@ -148,9 +186,14 @@ export default function AdminDashboard() {
                       <TableBody>
                         {buses.map((bus) => (
                           <TableRow key={bus.id}>
-                            <TableCell className="font-medium">{bus.id}</TableCell>
+                            <TableCell className="font-medium">
+                              {bus.id}
+                            </TableCell>
                             <TableCell>
-                              <Badge variant="outline" className="bg-primary/10 text-primary">
+                              <Badge
+                                variant="outline"
+                                className="bg-primary/10 text-primary"
+                              >
                                 {bus.route}
                               </Badge>
                             </TableCell>
@@ -164,7 +207,11 @@ export default function AdminDashboard() {
                                   <Edit className="h-4 w-4" />
                                   <span className="sr-only">Edit</span>
                                 </Button>
-                                <Button variant="outline" size="sm" className="text-red-500">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-red-500"
+                                >
                                   <Trash2 className="h-4 w-4" />
                                   <span className="sr-only">Delete</span>
                                 </Button>
@@ -183,16 +230,22 @@ export default function AdminDashboard() {
                   <CardHeader className="pb-2">
                     <CardTitle>Service Alerts</CardTitle>
                     <CardDescription>
-                      Manage real-time alerts about road conditions and service disruptions
+                      Manage real-time alerts about road conditions and service
+                      disruptions
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="mb-6 p-4 border rounded-lg">
-                      <h3 className="text-lg font-medium mb-4">Create New Alert</h3>
+                      <h3 className="text-lg font-medium mb-4">
+                        Create New Alert
+                      </h3>
                       <div className="grid gap-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="grid gap-2">
-                            <label htmlFor="alert-type" className="text-sm font-medium">
+                            <label
+                              htmlFor="alert-type"
+                              className="text-sm font-medium"
+                            >
                               Alert Type
                             </label>
                             <Select>
@@ -200,30 +253,55 @@ export default function AdminDashboard() {
                                 <SelectValue placeholder="Select type" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="road-construction">Road Construction</SelectItem>
-                                <SelectItem value="traffic-accident">Traffic Accident</SelectItem>
-                                <SelectItem value="special-event">Special Event</SelectItem>
-                                <SelectItem value="weather">Weather Condition</SelectItem>
-                                <SelectItem value="service-change">Service Change</SelectItem>
+                                <SelectItem value="road-construction">
+                                  Road Construction
+                                </SelectItem>
+                                <SelectItem value="traffic-accident">
+                                  Traffic Accident
+                                </SelectItem>
+                                <SelectItem value="special-event">
+                                  Special Event
+                                </SelectItem>
+                                <SelectItem value="weather">
+                                  Weather Condition
+                                </SelectItem>
+                                <SelectItem value="service-change">
+                                  Service Change
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
                           <div className="grid gap-2">
-                            <label htmlFor="alert-location" className="text-sm font-medium">
+                            <label
+                              htmlFor="alert-location"
+                              className="text-sm font-medium"
+                            >
                               Location
                             </label>
-                            <Input id="alert-location" placeholder="e.g. Main Street" />
+                            <Input
+                              id="alert-location"
+                              placeholder="e.g. Main Street"
+                            />
                           </div>
                         </div>
                         <div className="grid gap-2">
-                          <label htmlFor="alert-message" className="text-sm font-medium">
+                          <label
+                            htmlFor="alert-message"
+                            className="text-sm font-medium"
+                          >
                             Alert Message
                           </label>
-                          <Textarea id="alert-message" placeholder="Describe the alert..." />
+                          <Textarea
+                            id="alert-message"
+                            placeholder="Describe the alert..."
+                          />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div className="grid gap-2">
-                            <label htmlFor="affected-routes" className="text-sm font-medium">
+                            <label
+                              htmlFor="affected-routes"
+                              className="text-sm font-medium"
+                            >
                               Affected Routes
                             </label>
                             <Select>
@@ -240,7 +318,10 @@ export default function AdminDashboard() {
                             </Select>
                           </div>
                           <div className="grid gap-2">
-                            <label htmlFor="alert-duration" className="text-sm font-medium">
+                            <label
+                              htmlFor="alert-duration"
+                              className="text-sm font-medium"
+                            >
                               Duration
                             </label>
                             <Select>
@@ -275,14 +356,20 @@ export default function AdminDashboard() {
                                 <h4 className="font-medium">{alert.type}</h4>
                                 <AlertStatusBadge status={alert.status} />
                               </div>
-                              <p className="text-sm text-muted-foreground mb-1">Location: {alert.location}</p>
+                              <p className="text-sm text-muted-foreground mb-1">
+                                Location: {alert.location}
+                              </p>
                               <p className="text-sm">{alert.message}</p>
                             </div>
                             <div className="flex gap-2">
                               <Button variant="outline" size="sm">
                                 Edit
                               </Button>
-                              <Button variant="outline" size="sm" className="text-red-500">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-red-500"
+                              >
                                 End
                               </Button>
                             </div>
@@ -298,46 +385,50 @@ export default function AdminDashboard() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 function BusStatusBadge({ status }) {
-  let badgeClass = ""
+  let badgeClass = "";
 
   switch (status) {
     case "Active":
-      badgeClass = "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-      break
+      badgeClass =
+        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      break;
     case "Inactive":
-      badgeClass = "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300"
-      break
+      badgeClass =
+        "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
+      break;
     case "Maintenance":
-      badgeClass = "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
-      break
+      badgeClass =
+        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
+      break;
     default:
-      badgeClass = "bg-muted text-muted-foreground"
+      badgeClass = "bg-muted text-muted-foreground";
   }
 
-  return <Badge className={badgeClass}>{status}</Badge>
+  return <Badge className={badgeClass}>{status}</Badge>;
 }
 
 function AlertStatusBadge({ status }) {
-  let badgeClass = ""
+  let badgeClass = "";
 
   switch (status) {
     case "Active":
-      badgeClass = "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-      break
+      badgeClass = "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+      break;
     case "Scheduled":
-      badgeClass = "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
-      break
+      badgeClass =
+        "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+      break;
     case "Resolved":
-      badgeClass = "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-      break
+      badgeClass =
+        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      break;
     default:
-      badgeClass = "bg-muted text-muted-foreground"
+      badgeClass = "bg-muted text-muted-foreground";
   }
 
-  return <Badge className={badgeClass}>{status}</Badge>
+  return <Badge className={badgeClass}>{status}</Badge>;
 }
-
