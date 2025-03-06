@@ -1,4 +1,4 @@
- 
+
 
 generator client {
   provider = "prisma-client-js"
@@ -41,7 +41,7 @@ model Search {
 model Bus {
   id                String      @id @default(uuid())
   busNumber         String      @unique
-  status            String?      @default("available") 
+  status            String      @default("available") // Options: "available", "full"
   startLocationId   String
   destinationId     String
   startLocation     Location    @relation("StartLocation", fields: [startLocationId], references: [id])

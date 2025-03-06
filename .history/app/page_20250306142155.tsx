@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { MapPin, Bus, Bell, Info, Home, Search, User, Bookmark, History } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
-import { LiveTrackingMap } from "@/components/live-tracking-map"
 
 export default function HomePage() {
   const [bookmarkedLocations, setBookmarkedLocations] = useState([
@@ -19,8 +18,6 @@ export default function HomePage() {
     { id: 2, name: "Shopping Mall", time: "2 days ago" },
     { id: 3, name: "Central Station", time: "3 days ago" },
   ])
-
-  const [trackingRoute, setTrackingRoute] = useState(null)
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -83,7 +80,6 @@ export default function HomePage() {
                   arrivalTime="3 min"
                   congestion="Low"
                   nextBuses={["3 min", "15 min", "28 min"]}
-                  onTrackLive={() => setTrackingRoute({ number: "42", name: "Downtown Express" })}
                 />
 
                 <RouteCard
@@ -92,7 +88,6 @@ export default function HomePage() {
                   arrivalTime="7 min"
                   congestion="Medium"
                   nextBuses={["7 min", "22 min", "37 min"]}
-                  onTrackLive={() => setTrackingRoute({ number: "15", name: "University Line" })}
                 />
 
                 <RouteCard
@@ -101,7 +96,6 @@ export default function HomePage() {
                   arrivalTime="12 min"
                   congestion="High"
                   nextBuses={["12 min", "32 min", "52 min"]}
-                  onTrackLive={() => setTrackingRoute({ number: "8", name: "Central Station" })}
                 />
               </div>
             </TabsContent>
@@ -157,20 +151,11 @@ export default function HomePage() {
           <NavButton icon={<Bookmark className="h-5 w-5" />} label="Saved" />
         </div>
       </nav>
-
-      {trackingRoute && (
-        <LiveTrackingMap
-          routeNumber={trackingRoute.number}
-          routeName={trackingRoute.name}
-          isOpen={!!trackingRoute}
-          onClose={() => setTrackingRoute(null)}
-        />
-      )}
     </div>
   )
 }
 
-function RouteCard({ routeNumber, routeName, arrivalTime, congestion, nextBuses, onTrackLive }) {
+function RouteCard({ routeNumber, routeName, arrivalTime, congestion, nextBuses }) {
   const congestionColor =
     congestion === "Low"
       ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
@@ -208,9 +193,7 @@ function RouteCard({ routeNumber, routeName, arrivalTime, congestion, nextBuses,
         <Button variant="outline" size="sm">
           Route Details
         </Button>
-        <Button size="sm" onClick={onTrackLive}>
-          Track Live
-        </Button>
+        <Button size="sm">Track Live</Button>
       </div>
     </div>
   )

@@ -1,4 +1,8 @@
- 
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -8,6 +12,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 
 // Passenger Model
 model Passenger {
@@ -38,10 +43,23 @@ model Search {
   passenger   Passenger @relation(fields: [passengerId], references: [id], onDelete: Cascade)
 }
 
+// Location Model (For Start, Destination, and Checkpoints)
+model Location {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  latitude    Float
+  longitude   Float
+  busesStart  Bus[]    @relation("StartLocation")
+  busesDest   Bus[]    @relation("DestinationLocation")
+  bookmarks   Bookmark[]
+  checkpoints Checkpoint[]
+}
+
+// Bus Model (Has Start, Destination, and Checkpoints)
 model Bus {
   id                String      @id @default(uuid())
   busNumber         String      @unique
-  status            String?      @default("available") 
+  status            String      @default("available") // Options: "available", "full"
   startLocationId   String
   destinationId     String
   startLocation     Location    @relation("StartLocation", fields: [startLocationId], references: [id])
@@ -49,27 +67,14 @@ model Bus {
   checkpoints       Checkpoint[]
 }
 
+// Checkpoint Model (Intermediate Locations Between Start & Destination)
 model Checkpoint {
   id          String   @id @default(uuid())
   busId       String
   locationId  String
-  order       Int // Order of checkpoint in route
+  order       Int // The order of this checkpoint in the route
   bus         Bus      @relation(fields: [busId], references: [id], onDelete: Cascade)
   location    Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
-
-  @@index([busId, order]) // Index for faster queries
-}
-
-model Location {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  latitude    Float
-  longitude   Float
-  checkpoints Checkpoint[]
-  busesStart  Bus[]    @relation("StartLocation")
-  busesEnd    Bus[]    @relation("DestinationLocation")
-  roadUpdates RoadUpdate[]
-  bookmarks   Bookmark[]
 }
 
 // Road Updates (Admin updates real-time road conditions)
